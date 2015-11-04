@@ -1,33 +1,40 @@
 function task2
 global h
-iterMax = 20;
-N = 20;
+iterMax = 100;
+N = 40;
 h = 1./N ;
 x = 0:h:1;
 % initial condition
 %u = 2*ones(N+1,1);
-Nl = (N+1)/2; 
-u = zeros(N+1,1); 
-v1 = [ones(floor(Nl),1); zeros(N-floor(Nl),1)];
-v2 = [zeros(N-floor(Nl)+1,1) ;ones(floor(Nl)-1,1)];
+Nl = N-1;
+Nl1 = ceil(Nl/2);
+Nl2 = floor(Nl/2);
+
+u = zeros(N+1,1);
+v1 = [ones(Nl1,1); zeros(N-Nl1,1)];
+v2 = [zeros(N-Nl2,1) ;ones(Nl2,1)];
 B = diag(v1,-1) + diag(v2,1);
 
 %boundary condition
-u(1) = -2;
-u(N+1) = -2;
+u(1) = 0;
+u(N+1) = 0;
 b = [u(1)/h; v1] + [v2;u(N+1)/h];
-for iter=1:iterMax
 
-        u=B*u+h*b;
-
-    figure(1)    
+for iter=1:iterMax    
+    unew=B*u+h*b;
+    if(norm(u-unew)<1e-6)
+        break;
+    else
+        u = unew;
+    end
+    
+    figure(1)
     plot (x, u,'.-b')
     axis([0 1 -2 1])
     
-    pause (0.1)
 end
 
-
+iter-1
 end
 
 
