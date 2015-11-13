@@ -4,6 +4,14 @@ iterMax = 100;
 N = 40;
 h = 1./N ;
 x = 0:h:1;
+e = [];
+tol = 1e-12;
+h = 1./N;
+
+% exact solution
+ux = min(abs(x),abs(x-1))';
+
+
 % initial condition
 %u = 2*ones(N+1,1);
 Nl = N-1;
@@ -22,11 +30,18 @@ b = [u(1)/h; v1] + [v2;u(N+1)/h];
 
 for iter=1:iterMax    
     unew=B*u+h*b;
-    if(norm(u-unew)<1e-6)
-        break;
-    else
-        u = unew;
-    end
+    err = norm(unew-ux);
+    maxerr = h*sum(unew-u);
+    if(maxerr<tol)
+       fprintf('iter is %d\n',iter);
+       break;
+    end    
+    u = unew;
+    
+    e = [e err];
+%     if(err<tol)
+%         break;
+%     end
     
     figure(1)
     plot (x, u,'.-b')
@@ -35,6 +50,10 @@ for iter=1:iterMax
 end
 
 iter-1
+
+figure(2)
+semilogy(e)
+axis([0 iter 1e-12 1e0])
 end
 
 
