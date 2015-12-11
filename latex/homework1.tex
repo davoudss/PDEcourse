@@ -106,7 +106,36 @@
 \end{enumerate}
 
 
+\setcounter{section}{4}
+\item  \begin{enumerate}[a.]
+\item ???
+\item We write the scheme under the semi-discrete form
+\begin{align}
+u^{n+1}(x) = \frac{1}{2} \left[(u^n(x+\Delta x) +u^n(x-\Delta x)) + \lambda(u^n(x+\Delta x) +u^n(x-\Delta x))\right] 
+\label{eq:41}
+\end{align}
+with $\lambda=\frac{\Delta t }{\Delta x}$. Using the Fourier transform of \ref{eq:41} and we obtain
+\begin{align*}
+\chap{u}^{n+1}(\xi)  & = \frac{1}{2} \left[(\chap{u}^n(\xi)e^{i\Delta x \xi} +\chap{u}^n(\xi)e^{-i\Delta x \xi}) 
++ \lambda(\chap{u}^n(\xi)e^{i\Delta x \xi} -\chap{u}^n(\xi)e^{-i\Delta x \xi}) )\right] \\
+ & = A(\xi)\chap{u}(\xi)
+\end{align*}
+with $|A(\xi)|^2 = \cos(s)^2 +\lambda^2 \sin(s)^2 = 1-(1-\lambda^2)\sin(s)^2$ and $s=\xi \Delta x$.\\
+Therefore the scheme is $L^2$-stable if $|\lambda | \leq 1$. Finally, one notice that $|A(\pi)| =1$ and hence (9) does not hold. Thus the Lax-Friedrichs scheme in not a dissipative scheme. \\
+
+
+\item Doing exactly the same analysis of the Lax-Wendroff scheme we get 
+$$ |A(\xi)| = |1+\lambda i \sin(s) - 2\lambda^2 \sin(\frac{s}{2})^2 | $$
+Then noticing that $0 \leq \sin(s) = s - \frac{s^3}{3} +O(s^5) \leq s$ , we obtain
+\begin{align*}
+|A(\xi)|  \leq 1-\frac{\lambda^2}{4} s^4 
+\end{align*}
+Finally we can conclude that the Lax-Wendroff scheme is dissipative of order 4.
+
+
+
 \end{enumerate}	
+\end{enumerate}
 	
 	
 	
