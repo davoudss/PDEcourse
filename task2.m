@@ -28,27 +28,37 @@ u(1) = 0;
 u(N+1) = 0;
 b = [u(1)/h; v1] + [v2;u(N+1)/h];
 
-for iter=1:iterMax    
+nn = 1;
+for iter=1:iterMax
     unew=B*u+h*b;
     err = norm(unew-ux);
     maxerr = h*sum(unew-u);
     if(maxerr<tol)
-       fprintf('iter is %d\n',iter);
-       break;
-    end    
+        fprintf('iter is %d\n',iter);
+        break;
+    end
     u = unew;
     
     e = [e err];
-%     if(err<tol)
-%         break;
-%     end
+    %     if(err<tol)
+    %         break;
+    %     end
     
     figure(1)
-    plot (x, u,'.-b')
-    axis([0 1 -2 1])
+    hold on
+    if(mod(iter,2)==0)
+%        subplot(2,2,nn)
+        plot (x, u,'.-b')
+        title(['iter=',num2str(iter)])
+        axis([0 1 0 .5])
+        nn = nn + 1;
+
+    end
     
 end
-
+        plot (x, u,'.-b')
+        title(['iter=',num2str(iter)])
+        axis([0 1 0 .5])
 iter-1
 
 figure(2)

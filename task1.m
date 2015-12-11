@@ -20,7 +20,8 @@ u(1) = 0;
 u(N+1) = 0;
 w = u;
 
-
+cnt = 1;
+nn = 1;
 for t=dt:dt:Tend
     for j=2:N
         w(j) = u(j) - dt*(HG(u(j-1),u(j),u(j+1)) - 1);
@@ -35,17 +36,27 @@ for t=dt:dt:Tend
     
     e = [e err];
     
-    figure(1)    
-    plot (x, u,'.-b')
+    figure(1)
+    if(mod(cnt,12)==0)
+        subplot(2,2,nn)
+        plot (x, u,'.-b')
+        title(['time=',num2str(t)])
+        axis([0 1 0 .5])
+        nn = nn + 1;
+    end
+    cnt = cnt + 1;
     axis([0 1 0 0.5])
     pause (0.05)
 %     if(err<tol)
 %         break;
 %     end
 end
+        plot (x, u,'.-b')
+        title(['time=',num2str(t)])
 figure(2)
-semilogy(e)
-axis([0 t/dt 1e-16 1e0])
+whos e
+semilogy(1:cnt-1,e)
+axis([0 cnt 1e-16 1e0+.1])
 
 end
 

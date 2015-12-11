@@ -50,6 +50,7 @@ for iter=1:iterMax
   axis([0 1 -2 1])
   
 end
+
 iter-1
 figure(2)
 semilogy(0:1,e)

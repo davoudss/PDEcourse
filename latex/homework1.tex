@@ -16,6 +16,7 @@
 \usepackage{fourier}  %%  police
 \usepackage{titlesec}  %% modifier les section
 \usepackage{pgfplots} %% provides tools to generate plots and labeled axes easily
+\usepackage{color}
 
 \usepackage{tikz}  %%pour les figures
 \usetikzlibrary{positioning}
@@ -102,13 +103,62 @@
 \setcounter{section}{1}
 \begin{enumerate}
 \item \begin{enumerate}[a.]
+\item Here we consider the boundary value problem of the Eikonal equation in 1D.
+\begin{align*}
+\left\{
+	\begin{array}{ll}
+		|u_x|= r >0, & 0<x<1 \\
+		u(0) = 0, \\
+		u(1) = 0.
+	\end{array}
+\right.
+\end{align*}
+We solve the discretized system by a time marching method and with zero initial condition. The result of this is shown in figure \ref{fig:task1}
+\begin{figure}[h]
+\centering
+\includegraphics[scale=1.5]{fig/Task1}
+\caption{The time marching method is  used to solve the Eikonal equation. $\Delta x=0.01$ and $\Delta t=0.01$ and $CFL=\frac{\Delta x}{\Delta t}=1$.}
+\label{fig:task1}
+\end{figure}
+
+To guarantee the convergence, we need to compute the CFL condition. The discrete system for the time dependent Eikonal equation $u_t=|u_x|$, can be written as
+\begin{align*}
+u_j^{n+1}=&u_j^n-\frac{\Delta t}{\Delta x} \max(u_{j+1}^n-u_j^n,u_{j-1}^n-u_j^n,0)+{\cal O}(\Delta x\Delta t+\Delta t^2) \\
+=&(1-\alpha)u_j^n+\alpha\max(u_{j+1}^n,u_{j-1}^n,0)+{\cal O}(\Delta x\Delta t+\Delta t^2),
+\end{align*}
+where $\alpha=\frac{\Delta t}{\Delta x}$. For the sake of convergence, we need to have that $\alpha\leq 1$. Hence $\Delta t\leq  \Delta x$ guarantees the convergence. We used the maximum time step to compute the solutions in figure \ref{fig:task1}.
+
+\item Here we solve the Eikonal equation using Jacobi iterations. We observe that the total number of iterations are 21. The result showing the solutions in different iterations is shown in figure \ref{fig:task2}.
+\begin{figure}[h]
+\centering
+\includegraphics[scale=1.5]{fig/Task2}
+\caption{The solution is computed using Jacobi iterations. $\Delta x=0.01$ and $\Delta t=0.01$ and $CFL=\frac{\Delta x}{\Delta t}=1$.}
+\label{fig:task1}
+\end{figure}
+
+\item Now we use Gauss-Seidel iterations to compute the solution. This time we converge in 2 iterations which is shows a big difference compared to the Jacobi iteration.
+
+Note that the solution is the same and it takes the same number of iterations if the initial conditions are chosen to be 2 or -2 instead of 0. 
+
+\item We fix the grid and define the error as 
+\begin{align*}
+e_j^ n:=u(x_j)-u_j^n, u(x):= \min(|x|,|x-1|). 
+\end{align*}
+\begin{figure}[h]
+\centering
+\includegraphics[scale=1]{fig/task1_error}
+\includegraphics[scale=1]{fig/task2_error}
+\includegraphics[scale=1]{fig/task3_error}
+\caption{Error as a function of iterations for (top-left) time-marching, (top-right) Jacobi, (bottom) Gauss-Seidel methods.}
+\label{fig:task1}
+\end{figure}
 
 \end{enumerate}
 
 
 \setcounter{section}{4}
 \item  \begin{enumerate}[a.]
-\item ???
+\item For a 4th order dissipative scheme, the amplification factor is smaller compared to the one for the 2nd order dissipative scheme. This states that the scheme induces an energy loss in the system. 
 \item We write the scheme under the semi-discrete form
 \begin{align}
 u^{n+1}(x) = \frac{1}{2} \left[(u^n(x+\Delta x) +u^n(x-\Delta x)) + \lambda(u^n(x+\Delta x) +u^n(x-\Delta x))\right] 
@@ -121,18 +171,36 @@ with $\lambda=\frac{\Delta t }{\Delta x}$. Using the Fourier transform of \ref{e
  & = A(\xi)\chap{u}(\xi)
 \end{align*}
 with $|A(\xi)|^2 = \cos(s)^2 +\lambda^2 \sin(s)^2 = 1-(1-\lambda^2)\sin(s)^2$ and $s=\xi \Delta x$.\\
-Therefore the scheme is $L^2$-stable if $|\lambda | \leq 1$. Finally, one notice that $|A(\pi)| =1$ and hence (9) does not hold. Thus the Lax-Friedrichs scheme in not a dissipative scheme. \\
+Therefore the scheme is $L^2$-stable if $|\lambda | \leq 1$. Finally, one notice that $|A(\pi)| =1$ and hence (9) does not hold. Thus the Lax-Friedrich scheme in not a dissipative scheme. 
+
+The correction in the Friedrich scheme is the same as adding a numerical dissipation or a viscosity term to the scheme. This adds a significant dissipation to the system and therefore a great loss of energy. So if the CFL condition decreases, more dissipation is introduced to the system.\\
 
 
 \item Doing exactly the same analysis of the Lax-Wendroff scheme we get 
 $$ |A(\xi)| = |1+\lambda i \sin(s) - 2\lambda^2 \sin(\frac{s}{2})^2 | $$
-Then noticing that $0 \leq \sin(s) = s - \frac{s^3}{3} +O(s^5) \leq s$ , we obtain
+Then noticing that $ \sin(s)\leq s$ on $[0,\pi]$ , we obtain
 \begin{align*}
 |A(\xi)|  \leq 1-\frac{\lambda^2}{4} s^4 
 \end{align*}
 Finally we can conclude that the Lax-Wendroff scheme is dissipative of order 4.
 
+Despite the Lax-Friedrich scheme does not introduce any dissipation to the system as long as the CFL condition is satisfied.
 
+\item The transport equation now is solved using the Lax-Friedrich and Lax-wendroff schemes. We plot the solution for both methods and for two different initial conditions. Also the Lax-Friedrich scheme is first order in time and space and  the Lax-Wendroff scheme is second order in time and first order in space.
+
+\begin{figure}
+\centering
+\includegraphics[scale=1]{fig/LAXF_IC1}
+\includegraphics[scale=1]{fig/LAXF_IC2}
+\caption{The solution of $u_t-u_x=0$ using the Lax-Friedrich scheme, coupled with the initial condition $\cos(x)+\frac{1}{4}\sin(mx)$, $m=\frac{N+1}{4}$ (left) and $m=\frac{N+1}{2}$ (right). In each figure, we plot the initial condition (blue $\color{blue} -$), and the solution using $CFL=0.5$ (red $\color{red} -$) and $CFL=0.1$ (green $\color{green} -$).}
+\end{figure}
+
+\begin{figure}
+\centering
+\includegraphics[scale=1]{fig/LAXW_IC1}
+\includegraphics[scale=1]{fig/LAXW_IC2}
+\caption{The solution of $u_t-u_x=0$ using the Lax-Wendroff scheme, coupled with the initial condition $\cos(x)+\frac{1}{4}\sin(mx)$, $m=\frac{N+1}{4}$ (left) and $m=\frac{N+1}{2}$ (right). In each figure, we plot the initial condition (blue $\color{blue} -$), and the solution using $CFL=0.5$ (red $\color{red} -$) and $CFL=0.1$ (green $\color{green} -$).}
+\end{figure}
 
 \end{enumerate}	
 \end{enumerate}
