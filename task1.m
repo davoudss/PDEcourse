@@ -34,29 +34,33 @@ for t=dt:dt:Tend
     u = w;
     err = norm(u-ux);
     
-    e = [e err];
-    
-    figure(1)
+    e = abs(u-ux); 
+
     if(mod(cnt,12)==0)
-        subplot(2,2,nn)
+         figure(1)
         plot (x, u,'.-b')
         title(['time=',num2str(t)])
         axis([0 1 0 .5])
+        figure(2)
+        subplot(2,2,nn)
+        semilogy(e)
+        title(['iter=',num2str(cnt)])
+        set(gca,'ytick',[1e-15 1e-10 1e-5 1e0])
+        xlabel('x')
+        ylabel('error')
+        %axis([0 cnt 1e-18 1e0])
+        grid on   
         nn = nn + 1;
     end
     cnt = cnt + 1;
-    axis([0 1 0 0.5])
-    pause (0.05)
+ 
 %     if(err<tol)
 %         break;
 %     end
 end
-        plot (x, u,'.-b')
-        title(['time=',num2str(t)])
-figure(2)
-whos e
-semilogy(1:cnt-1,e)
-axis([0 cnt 1e-16 1e0+.1])
+%         plot (x, u,'.-b')
+%         title(['time=',num2str(t)])
+
 
 end
 

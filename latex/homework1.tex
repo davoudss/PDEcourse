@@ -113,7 +113,7 @@
 	\end{array}
 \right.
 \end{align*}
-We solve the discretized system by a time marching method and with zero initial condition. The result of this is shown in figure \ref{fig:task1}
+We solve the discretized system by a time marching method and with zero initial condition. The result of this is shown in figure \ref{fig:task1}.
 \begin{figure}[h]
 \centering
 \includegraphics[scale=1.5]{fig/Task1}
@@ -133,12 +133,12 @@ where $\alpha=\frac{\Delta t}{\Delta x}$. For the sake of convergence, we need t
 \centering
 \includegraphics[scale=1.5]{fig/Task2}
 \caption{The solution is computed using Jacobi iterations. $\Delta x=0.01$ and $\Delta t=0.01$ and $CFL=\frac{\Delta x}{\Delta t}=1$.}
-\label{fig:task1}
+\label{fig:task2}
 \end{figure}
 
-\item Now we use Gauss-Seidel iterations to compute the solution. This time we converge in 2 iterations which is shows a big difference compared to the Jacobi iteration.
+\item Now we use Gauss-Seidel iterations to compute the solution. The scheme converges in only 2 iterations. This a considerable difference compared to the Jacobi iteration.
 
-Note that the solution is the same and it takes the same number of iterations if the initial conditions are chosen to be 2 or -2 instead of 0. 
+Note that if the initial conditions are chosen to be 2 or -2 instead of 0, the solutions for each method and number of iterations remain the same. 
 
 \item We fix the grid and define the error as 
 \begin{align*}
@@ -146,15 +146,82 @@ e_j^ n:=u(x_j)-u_j^n, u(x):= \min(|x|,|x-1|).
 \end{align*}
 \begin{figure}[h]
 \centering
-\includegraphics[scale=1]{fig/task1_error}
-\includegraphics[scale=1]{fig/task2_error}
-\includegraphics[scale=1]{fig/task3_error}
-\caption{Error as a function of iterations for (top-left) time-marching, (top-right) Jacobi, (bottom) Gauss-Seidel methods.}
-\label{fig:task1}
+\includegraphics[scale=.7]{fig/task1_error}
+\caption{Point-wise error for the time-marching method.}
+\label{fig:task1_err}
 \end{figure}
 
+\begin{figure}[h]
+\centering
+\includegraphics[scale=.7]{fig/task2_error}
+\caption{Point-wise error for the the Jacobi iterations.}
+\label{fig:task2_err}
+\end{figure}
+\begin{figure}[h]
+\centering
+\includegraphics[scale=1]{fig/task3_error}
+\caption{Point-wise error for the Gauss-Seidel iterations.}
+\label{fig:task3_err}
+\end{figure}
+
+we note here that the error is very similar for the case of the Jacobi iterations and the time marching scheme. But it is certainly different for the Gauss-Seidel iterations.
+\item The number of iterations is 21 for the Jacobi iteration and is 1 for the Gauss-Seidel iteration.
+
+\item The rate of convergence is 1 for the Jacobi iteration and is 2 for the Gauss-Seidel iterations. The order of accuracy cannot be determined since the we get the exact solution for any $h$.
 \end{enumerate}
 
+\setcounter{section}{2}
+\item We consider the scheme
+\begin{align*}
+U^{n+1} & = Q(t_n)U^n+\Delta t F^n \\
+U^0 & = g
+\end{align*}
+We want to prove by induction that the discrete Duhamel's Principle holds.\\
+The case $n=0$ is clear. Let now assume that the statement is true for a certain $n >0$. Then
+\begin{align*}
+U^{n+1} & = Q(t_n) \left[ S_h(t_n,0) + \Delta t \sum_{\nu =0}^{n-1} S_h(t_n,t_{\nu+1})F^\nu   \right] \\
+ & = S_h(t_{n+1},0) + \Delta t \sum_{\nu=0}^{n-1} S_h(t_{n+1},t_{\nu +1})F^\nu + \Delta t F^n \\
+ & = S_h(t_{n+1},0) + \Delta t \sum_{\nu=0}^n S_h(t_{n+1},t_{\nu+1})F^\nu
+\end{align*}
+Finally we can conclude that the statement is true for all $n \geq 0$.
+
+\setcounter{section}{3}
+\item  \begin{enumerate}[a.]
+\item We consider the scalar model probelm for IVPs
+\begin{align*}
+\dfrac{dy}{dt} &= \lambda y,\quad \lambda>0,\\
+y(0) &= 1.
+\end{align*}
+We try Explicit and Implicit Euler methods for the model problem. In figure \ref{fig:eeie_sol} and \ref{fig:eeie_err} we plot the solution and relative error for both methods respectively. The relative error is computed via 
+\begin{align*}
+e_n := \dfrac{y(t_n)-y_n}{|y(t_n)|}.
+\end{align*}
+\begin{figure}[h]
+\centering
+\includegraphics[scale=1]{fig/eeie_sol}
+\caption{The exact, and approximate solutions using Explicit and Implicit Euler methods for $h\lambda=0.1$ (A stable solution).}
+\label{fig:eeie_sol}
+\end{figure}
+\begin{figure}[h]
+\centering
+\includegraphics[scale=.9]{fig/eeie_errors}
+\caption{The relative error in computing the solution of the IVP model problem using Explicit and Implicit Euler methods for different values of $h\lambda$.}
+\label{fig:eeie_err}
+\end{figure}
+
+The iterations of the explicit and implicit Euler methods can be written as
+\begin{align}
+y_{n} &= (1+h\lambda)y_{n-1}=(1+h\lambda)^ny_0=(1+h\lambda)^n. \\
+y_{n} &= (1-h\lambda)^{-1}y_{n-1}=(1-h\lambda)^{-n}y_0=(1-h\lambda)^{-n}.
+\end{align}
+On the other hand, the exact solution, considering the initial condition can be written as $y=e^{\lambda t}$ and $y(t_n)=e^{\lambda nh}$. Now we can compute the error for both methods.
+\begin{align}
+e^n_{EE} = 1-\dfrac{(1+h\lambda)^n}{e^{\lambda nh}},\\
+e^n_{EE} = 1-\dfrac{(1-h\lambda)^{-n}}{e^{\lambda nh}}.
+\end{align}
+It is simple to see that the Implicit Euler method fails whenever $h\lambda$ is close to 1. On the other hand both method  both method show the same behaviour for sufficiently large values of $h\lambda$. For the case $h\lambda\ll 1$, both methods are stable, though the Explicit Euler has a smaller error compared to the Implicit Euler. These can also be observed in the error plots \ref{fig:eeie_err}. This suggests that, the Implicit Euler method is not the best candidate to solve this problem.
+
+\end{enumerate}
 
 \setcounter{section}{4}
 \item  \begin{enumerate}[a.]

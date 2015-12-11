@@ -1,10 +1,12 @@
 function task2
 global h
 iterMax = 100;
-N = 40;
+N = 120;
 h = 1./N ;
 x = 0:h:1;
-e = [];
+e = zeros(N+1,1);
+errnew = 0;
+nn = 1;
 tol = 1e-12;
 h = 1./N;
 
@@ -28,7 +30,6 @@ u(1) = 0;
 u(N+1) = 0;
 b = [u(1)/h; v1] + [v2;u(N+1)/h];
 
-nn = 1;
 for iter=1:iterMax
     unew=B*u+h*b;
     err = norm(unew-ux);
@@ -38,32 +39,53 @@ for iter=1:iterMax
         break;
     end
     u = unew;
-    
-    e = [e err];
+   
     %     if(err<tol)
     %         break;
     %     end
-    
-    figure(1)
-    hold on
-    if(mod(iter,2)==0)
-%        subplot(2,2,nn)
-        plot (x, u,'.-b')
-        title(['iter=',num2str(iter)])
-        axis([0 1 0 .5])
-        nn = nn + 1;
-
-    end
-    
+    e = abs(u-ux); 
+%     if(mod(iter,4)==0)
+        %        subplot(2,2,nn)
+%         figure(1)
+%         hold on
+%         plot (x, u,'.-b')
+%         title(['iter=',num2str(iter)])
+%         axis([0 1 0 .5])
+%         figure(2)
+%         subplot(2,2,nn)
+%         semilogy(e)
+%         title(['iter=',num2str(iter)])
+%         set(gca,'ytick',[1e-15 1e-10 1e-5 1e0])
+%         xlabel('x')
+%         ylabel('error')
+%         axis([0 N 1e-18 1e0])
+%         grid on
+%         nn = nn + 1;
+%         if(nn>4) 
+%             break; 
+%         end
+%    end
+err = sum(u-ux)/N;
+errnew/err
+errnew = err;
 end
-        plot (x, u,'.-b')
-        title(['iter=',num2str(iter)])
-        axis([0 1 0 .5])
-iter-1
 
-figure(2)
-semilogy(e)
-axis([0 iter 1e-12 1e0])
+
+
+%         plot (x, u,'.-b')
+%         title(['iter=',num2str(iter)])
+%         axis([0 1 0 .5])
+% iter-1
+% 
+
+% figure(2)
+% semilogy(e)
+% title(['iter=',num2str(iter)])
+% set(gca,'ytick',[1e-15 1e-10 1e-5 1e0])
+% xlabel('x')
+% ylabel('error')
+% axis([0 N 1e-18 1e0])
+% grid on
 end
 
 
