@@ -8,7 +8,7 @@ NN = [40 80 120];
 n = nn(k);
 N = NN(k);
 
-scheme = '3-point';
+scheme = '7-point';
 
 % plot vectors
 x = linspace(-.5,.5,N);
@@ -52,8 +52,9 @@ colorbar
 view(2)
 end
 
+
 function A = Construct_Matrix_scheme1(N)
-A = zeros(N^2,N^2);
+A=0;
 A= sparse(A);
 e = ones(N,1);
 for k=1:N:N^2
@@ -76,7 +77,7 @@ end
 end
 
 function A = Construct_Matrix_scheme2(N)
-A = zeros(N^2,N^2);
+A=0;
 A= sparse(A);
 e = ones(N,1);
 for k=1:N:N^2

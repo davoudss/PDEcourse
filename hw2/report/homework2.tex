@@ -73,6 +73,7 @@
 \newcommand{\vect}[1]{\mathbf{#1}}
 \newcommand{\eq}{\Longleftrightarrow}
 \newcommand{\chap}[1]{\widehat{#1}}
+\newcommand{\bn}{\mathbf{n}}
 \newcommand{\R}{\mathbb{R}}
 \newcommand{\N}{\mathbb{N}}
 \newcommand{\Po}{\mathbb{P}}
@@ -122,9 +123,83 @@ Hence,
 \end{align}
 and
 \begin{align}
-|\hat{u}(\omega,t)| = |e^{(\omega^2+\omega^4)t}\hat{f}(\omega)|,
+\|\hat{u}(\omega,t)\| = \|e^{(\omega^2+\omega^4)t}\hat{f}(\omega)\|.
 \end{align}
-\item 
+For the problem to be well-posed, we need that $\|\hat{u}(\omega,t)\|\leq \|\hat{f}\|$ for any $\omega$. But this does not hold unless $\omega=0$. This states that the problem is ill-posed for any given boundary condition.
+
+But now, let us consider Neumann boundary conditions instead. For this, we start by multiplying the differential equation by $u$ and integrating by part. We have,
+\begin{align}
+\dfrac{1}{2}\dfrac{\partial}{\partial t}\|u\|^2_{L^2} =& -<u,u_{xx}>_{\Omega} + <u,u_{xxxx}>_{\Omega} \nonumber \\
+=&\|u_x\|^2_{L^2} + <u,u_{x}\cdot\bn>_{\partial\Omega} + \|u_{xx}\|^2_{L^2} - <u_x,u_{xx}\cdot\bn>_{\partial\Omega}+<u,u_{xxx}\cdot\bn>_{\partial\Omega}.
+\end{align}
+Given the following Neumann boundary conditions 
+\begin{align}
+\left\lbrace
+\begin{array}{cc}
+u_x\cdot\bn &= 0, \quad \text{on } \partial\Omega,\\
+u_{xxx}\cdot\bn &= 0, \quad \text{on } \partial\Omega,
+\end{array}\right.
+\end{align}
+we obtain,
+\begin{align}
+\dfrac{1}{2}\dfrac{\partial}{\partial t}\|u\|^2_{L^2} \leq \|u_{x}\|^2_{L^2} + \|u_{xx}\|^2_{L^2} \leq \|u\|^2_{H^2}.
+\end{align}
+Since the vector space is finite, all the norms are equivalent and therefore, it exists a constant $C_1$ such that 
+\begin{align*}
+\|u\|^2_{H^2}\leq C_1\|u\|^2_{L^2}.
+\end{align*}
+This states that
+\begin{align}
+\dfrac{\partial}{\partial t}\|u\|^2_{L^2} \leq C \|u\|^2_{L^2}.
+\end{align}
+Therefore, the operator $P(t,x,\partial/\partial x,\ldots,\partial^4/\partial x^4)$ is semi-bounded and the differential equation \eqref{eq:task1_ivp} is well-posed. 
+
+\item We consider the following stochastic problem
+\begin{align*}
+u_t = \max(2u_{xx}+u_{yy},u_{xx}+2u_{yy}), \quad x,y\in [0,1],t\geq 0.
+\end{align*}
+We can write,
+\begin{align*}
+u_t = u_{xx}+u_{yy}+\max(u_{xx},u_{yy}), \quad x,y\in [0,1],t\geq 0.
+\end{align*}
+Discretizing using Forward Euler in time and central difference in space, we get
+\begin{align}
+u_{i,j}^{n+1} &= (1-6\alpha)u_{i,j}^n + \alpha\left(\sum_{k=0,1} u_{{i,j}\pm e_k}^n \right) + \alpha\max(u_{i-1,j}^n+u_{i+1,j}^n,u_{i,j-1}^n+u_{i,j+1}^n) \nonumber \\
+&\leq (1-6\alpha)u_{i,j}^n + \alpha\left(\sum_{k=0,1} u_{{i,j}\pm e_k}^n \right) + \alpha\max(u_{i-1,j}^n,u_{i,j-1}^n)+\alpha\max(u_{i+1,j}^n,u_{i,j+1}^n),
+\label{eq:task2_convex}
+\end{align}
+where $\alpha=\frac{\Delta t}{\Delta h^2}\in[0,1]$, $\Delta x=\Delta y$. This is a convex combination of the involved terms. Therefore
+\begin{align*}
+|u_{i,j}^{n+1}|\leq \max(|u_{i,j}^n|, |u_{i\pm1,j}^n|, |u_{i,j\pm1}^n|),
+\end{align*}
+which gives
+\begin{align}
+\max_{i,j} |u_{i,j}^{n+1}|&\leq \max_{i,j}(|u_{i,j}^n|, |u_{i\pm1,j}^n|, |u_{i,j\pm1}^n|) \nonumber\\
+&\leq \max_{i,j}(|u_{i,j}^n|).
+\label{eq_task2_maxnorm}
+\end{align}
+This assures the stability in the max norm.
+
+Now we define $Z_{i,j}^n := U_{i,j}^n-u_{i,j}^n$ where $U_{i,j}^n=U(x_i,y_j)$. Inserting this into \eqref{eq:task2_convex}, we obtain
+\begin{align*}
+Z_{i,j}^{n+1} = (1-6\alpha)Z_{i,j}^n + \alpha\left(\sum_{k=0,1} Z_{{i,j}\pm e_k}^n \right) + \alpha\max(Z_{i-1,j}^n+Z_{i+1,j}^n,Z_{i,j-1}^n+Z_{i,j+1}^n) + \mathcal{O}(\Delta t\Delta x^2+\Delta t^2),
+\end{align*}
+and consequently using \eqref{eq_task2_maxnorm} we get
+\begin{align*}
+\|Z^{n}\|_\infty&\leq \|Z^{n-1}\|_\infty + \mathcal{O}(\Delta t\Delta x^2+\Delta t^2)\nonumber\\
+&\leq \|Z^0\|_{\infty} + \mathcal{O}(n\Delta t\Delta x^2+n\Delta t^2), \quad n\Delta t\leq T.
+\end{align*}
+Hence
+\begin{align*}
+\|U(x_i,y_j,t^{n})-u_{i,j}^n\| \leq t\mathcal{O}(\Delta x^2+\Delta t), \quad 0\leq \Delta t\leq \dfrac{\Delta x^2}{2}.
+\end{align*}
+
+
+
+
+\newpage
+
+
 \item \begin{enumerate}[a.]
 \item Considering the the following second order PDE
 \begin{align}
@@ -218,6 +293,7 @@ The solutions of the PDE in \eqref{eq:task3_pde} using the two schemes in part a
 \label{fig:task3_scheme2_alpha01}
 \end{figure}
 
+Due to the pattern of the boundary condition, the second scheme works significantly better for both cases of $\alpha$, since the stencil is aligned with the patterns. This can also be seen from the error plot in figure \ref{fig:task3_scheme2_alpha01}. On the other hand, the first scheme, averages solutions in an incorrect pattern and therefore we get a damping effect at the center of the domain. This can be also observed by computing the next term of the Taylor expansions in part a.
 
 \end{enumerate}
 
