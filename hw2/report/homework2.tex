@@ -106,13 +106,31 @@
 	
 \setcounter{section}{1}
 \begin{enumerate}
-\item
-\item
+\item In this task, we aim to derive boundary conditions such that the following IVP is well-posed.
+\begin{align}
+u_t=-u_{xx}+u_{xxxx},\quad x\in D=[0,1],~t\geq0.
+\label{eq:task1_ivp}
+\end{align}
+Let us assume that the boundary condition has the form of $u(x,0)=f(x)$ where $x\in D$. In Fourier space, the differential equation in \eqref{eq:task1_ivp} can be written as
+\begin{align}
+\dfrac{\partial \hat{u}(\omega,t)}{\partial t} &= (\omega^2+\omega^4) \hat{u}(\omega,t),\\
+\hat{u}(\omega,0) &= \hat{f}(\omega).
+\end{align}
+Hence,
+\begin{align}
+\hat{u}(\omega,t) = e^{(\omega^2+\omega^4)t}\hat{f}(\omega),
+\end{align}
+and
+\begin{align}
+|\hat{u}(\omega,t)| = |e^{(\omega^2+\omega^4)t}\hat{f}(\omega)|,
+\end{align}
+\item 
 \item \begin{enumerate}[a.]
 \item Considering the the following second order PDE
-\begin{align*}
+\begin{align}
 \mathfrak{L} = -(u_{xx}+2u_{xy}+u_{yy})=0,
-\end{align*}
+\label{eq:task3_pde}
+\end{align}
 and the following schemes
 \begin{align}
 \mathfrak{L}_{\Delta_1}=\dfrac{1}{h^2}&(2u_{i+1,j}+2u_{i,j+1}+2u_{i-1,j}+2u_{i,j-1}-6u_{i,j}-u_{i+1,j-1}-u_{i-1,j+1}),\\
@@ -141,6 +159,65 @@ From this, it is easy to verify that
 \lim_{h\to0}\mathfrak{L}_{\Delta_i}-\mathfrak{L} = 0, \quad i=1,2.
 \end{align*}
 This proves the consistency of both methods.
+
+
+\item To find the exact solution of PDE $\mathfrak{L}$ in \eqref{eq:task3_pde}, we note that the PDE can be written as 
+\begin{align}
+\mathfrak{L} = f_x+f_y = 0, \quad f = u_x+u_y.
+\label{eq:task3_pde_f}
+\end{align}
+Now, let us consider two different set of boundary conditions;
+\begin{enumerate}
+\item $u(x,y) = C, \quad (x,y)\in\partial D.$
+\item $u(x,y) = \alpha \sin(6\pi(x-y)), \quad (x,y)\in\partial D, \quad \alpha\in\mathbb{R}$ .
+\end{enumerate}
+In both cases $f(x,y)=0$ where $(x,y)\in\partial D$. The PDE in \eqref{eq:task3_pde_f} can be considered as a steady state 2D Transport equation. This PDE has a general solution of the form
+$$
+f(x,y) = g(x-y).
+$$
+Considering the boundary conditions above, for each case, the solution of the PDE can be written as
+\begin{enumerate}
+\item $u(x,y) = C, \quad (x,y)\in D.$
+\item $u(x,y) = \alpha \sin(6\pi(x-y)), \quad (x,y)\in D, \quad \alpha\in\mathbb{R}$ .
+\end{enumerate}
+These solutions can be used as references to compute the error committed by each scheme.
+\item The solutions of the PDE in \eqref{eq:task3_pde} using the two schemes in part a, and with the sinusoidal boundary condition and $\alpha=1$ are shown in figures \ref{fig:task3_scheme1_alpha1} and \ref{fig:task3_scheme2_alpha1}. Different solutions are computed with three different steps sizes $h=1/40, 1/80,$ and $1/120$. As figures state, the scheme 1 does not capture the exact solution at the center of the domain even with very small step sizes. In contrast, scheme 2 converges to the exact solution with almost any steps size.
+\begin{figure}[h]
+\centering
+\includegraphics[scale=.8]{fig/task3_scheme1_a1_N_40_80_120}
+\caption{(Top to Bottom) The exact solution (left), numerical solution (middle) and the committed error (right) of the PDE in \eqref{eq:task3_pde} with the sinusoidal boundary condition and $\alpha=1$ using the scheme 1 for $h = 1/40, 1/80, 1/120$.}
+\label{fig:task3_scheme1_alpha1}
+\end{figure}
+\begin{figure}[h]
+\centering
+\includegraphics[scale=.8]{fig/task3_scheme2_a1_N_40_80_120}
+\caption{(Top to Bottom) The exact solution (left), numerical solution (middle) and the committed error (right) of the PDE in \eqref{eq:task3_pde} with the sinusoidal boundary condition and $\alpha=1$ using the scheme 2 for $h = 1/40, 1/80, 1/120$.}
+\label{fig:task3_scheme2_alpha1}
+\end{figure}
+
+For the second experiment, we choose 
+\begin{align}
+\alpha=\left\lbrace
+\begin{array}{cc}
+1, & x\leq y,\\
+0, & x> y.
+\end{array}\right.
+\label{eq:alpha}
+\end{align}
+The solutions of the PDE in \eqref{eq:task3_pde} using the two schemes in part a, and with the sinusoidal boundary condition and $\alpha$ as in \eqref{eq:alpha} are shown in figures \ref{fig:task3_scheme1_alpha01} and \ref{fig:task3_scheme2_alpha01}. As the error figure in \ref{fig:task3_scheme1_alpha01} shows, this scheme introduces a small dispersion in the solution for the right bottom triangular part of the domain. This is clearly not the case for the second scheme.
+\begin{figure}[h]
+\centering
+\includegraphics[scale=.8]{fig/task3_scheme1_a10_N_40_80_120}
+\caption{(Top to Bottom) The exact solution (left), numerical solution (middle) and the committed error (right) of the PDE in \eqref{eq:task3_pde} with the sinusoidal boundary condition and $\alpha$ as in \eqref{eq:alpha} using the scheme 1 for $h = 1/40, 1/80, 1/120$.}
+\label{fig:task3_scheme1_alpha01}
+\end{figure}
+\begin{figure}[h]
+\centering
+\includegraphics[scale=.8]{fig/task3_scheme2_a10_N_40_80_120}
+\caption{(Top to Bottom) The exact solution (left), numerical solution (middle) and the committed error (right) of the PDE in \eqref{eq:task3_pde} with the sinusoidal boundary condition and $\alpha$ as in \eqref{eq:alpha} using the scheme 2 for $h = 1/40, 1/80, 1/120$.}
+\label{fig:task3_scheme2_alpha01}
+\end{figure}
+
 
 \end{enumerate}
 
