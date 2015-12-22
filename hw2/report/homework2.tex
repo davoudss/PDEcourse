@@ -129,15 +129,15 @@ For the problem to be well-posed, we need that $\|\hat{u}(\omega,t)\|\leq \|\hat
 
 But now, let us consider Neumann boundary conditions instead. For this, we start by multiplying the differential equation by $u$ and integrating by part. We have,
 \begin{align}
-\dfrac{1}{2}\dfrac{\partial}{\partial t}\|u\|^2_{L^2} =& -<u,u_{xx}>_{\Omega} + <u,u_{xxxx}>_{\Omega} \nonumber \\
-=&\|u_x\|^2_{L^2} + <u,u_{x}\cdot\bn>_{\partial\Omega} + \|u_{xx}\|^2_{L^2} - <u_x,u_{xx}\cdot\bn>_{\partial\Omega}+<u,u_{xxx}\cdot\bn>_{\partial\Omega}.
+\dfrac{1}{2}\dfrac{\partial}{\partial t}\|u\|^2_{L^2} =& -\int_{\Omega} u . u_{xx} \diff x + \int_{\Omega} u . u_{xxxx} \diff x \nonumber \\
+=&\|u_x\|^2_{L^2} + [u . u_{x} ]_0^1 + \|u_{xx}\|^2_{L^2} - [u_x . u_{xx}]_0^1+[u . u_{xxx}]_0^1.
 \end{align}
 Given the following Neumann boundary conditions 
 \begin{align}
 \left\lbrace
 \begin{array}{cc}
-u_x\cdot\bn &= 0, \quad \text{on } \partial\Omega,\\
-u_{xxx}\cdot\bn &= 0, \quad \text{on } \partial\Omega,
+u_x(0) = u_x(1) &= 0, \\
+u_{xxx}(0) = u_{xxx}(1) &= 0, 
 \end{array}\right.
 \end{align}
 we obtain,
