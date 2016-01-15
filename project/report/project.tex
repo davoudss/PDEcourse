@@ -235,7 +235,14 @@ u_x(0,t) &= c^2w_x(0,t).
 \end{align}
 Also we shift the grid to make sure that the discontinuity is not at one of the grid points. As in \eqref{eq:laplace} we discretize the system of equations in \eqref{eq:1d_equations} and the  boundary conditions.
 
-At the interface
+At the interface we compute the value and the derivative using Lagrange interpolations (see figure \ref{fig:1d_interp}). Next we discretize the jump condition and using the discretized system of equations and simplifications, the semi- discrete problem can be written in a matrix form as $Bw_{tt}=\frac{1}{h^2}Aw$ where $A$ and $B$ are tridiagonal matrices.
+
+To solve this second order ODE, we can convert the system into two 1st order set of ODEs
+% as C_1 Z_t = C_2 Z, where Z = [v v_t]'.
+% Discretize this by Explicit Euler to get 
+% Z^(n+1) = (I+inv(C_1)*C_2*dt*Z^n.
+% or Implicit Euler to get 
+% Z^(n+1) = inv(I-inv(C_1)*C_2*dt)*Z^n.
 
 
 
