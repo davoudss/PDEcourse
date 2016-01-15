@@ -111,7 +111,7 @@ The main goal of this manuscript is two present a second order accurate embedded
 There exist other methods based on unstructured grids such as Finite volume or Discontinuous Galerkin method to solve the wave equation with jumps in the boundary. Other authors have considered immersed finite element method which is based on the unfitted mesh.
 
 \section{Outline of the algorithm}
-We consider a scalar second order wave equation in a two dimensional domain (see figure \ref{...}) with a piecewise constant coefficient,
+We consider a scalar second order wave equation in a two dimensional domain (see figure \ref{fig:domain}) with a piecewise constant coefficient,
 \begin{align*}
 \rho(\bx)=\left\lbrace
 \begin{array}{cc}
@@ -134,8 +134,9 @@ where $F(\bx,t)$ is a forcing term. Now assume a smooth interface $\Gamma$ betwe
 \begin{center}
 \begin{minipage}[c]{.5\textwidth}
 \begin{align}
-u &= w, &\bx\in\Gamma, \quad t\geq 0, \\
+u &= w, &\bx\in\Gamma, \quad t\geq 0, \label{eq:jump_1} \\
 \dfrac{1}{\rho_I}\dfrac{\partial u}{\partial n} &= -\dfrac{1}{\rho_{II}}\dfrac{\partial w}{\partial n}, &\bx\in\Gamma, \quad t\geq 0.
+\label{eq:jump_2}
 \end{align}
 \end{minipage}
 \end{center}
@@ -153,6 +154,7 @@ u &= w, &\bx\in\Gamma, \quad t\geq 0, \\
 \draw (0,-0.5) node[below left] {$\Omega_I$};
 
 \end{tikzpicture}
+\label{fig:domain}
 \captionof{figure}{The Domain is divided into two subdomains $\Omega_I$ and $\Omega_{II}$.}
 \end{minipage}
 \end{center}
@@ -161,13 +163,13 @@ The Laplacian is discretized using a second order accurate approximation given b
 \begin{align}
 \Delta_h u_{i,j}^n := \dfrac{1}{h^2}\left( u_{i\pm1,j}^n+u_{i,j\pm1}^n-4u_{i,j}^n\right), \quad \bx_{i,j}\in\Omega_I.
 \end{align}
-A similar formula can be written for the solution on subdomain $\Omega_{II}$. Moreover we need to define a set of ghost points for the interior subdomain $\Omega_{I}$,
+A similar formula can be written for the solution on subdomain $\Omega_{II}$. Moreover we need to define a set of ghost points for the interior subdomain $\Omega_{I}$, (see figure \ref{fig_ghost})
 \begin{align}
 G_I = \lbrace (i,j), \bx_{i,j}\notin \Omega_I, \text{ but at least one of } \bx_{i\pm1,j}\in\Omega_I \text{ or } \bx_{i,j\pm1}\in\Omega_I\rbrace.
 \end{align}
 The corresponding expression can be used for the ghost points in $\Omega_{II}$. 
 
-
+Note that the solution at the ghost points are obtained using the jump conditions \eqref{eq:jump_1} and \eqref{eq:jump_2}.
 
 
 
