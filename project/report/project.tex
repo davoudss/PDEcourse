@@ -142,6 +142,7 @@ u &= w, &\bx\in\Gamma, \quad t\geq 0, \label{eq:jump_1} \\
 \end{center}
 
 \begin{center}
+\vspace{.5cm}
 \begin{minipage}[c]{0.5\textwidth}
 \centering
 \begin{tikzpicture}
@@ -155,21 +156,86 @@ u &= w, &\bx\in\Gamma, \quad t\geq 0, \label{eq:jump_1} \\
 
 \end{tikzpicture}
 \label{fig:domain}
-\captionof{figure}{The Domain is divided into two subdomains $\Omega_I$ and $\Omega_{II}$.}
 \end{minipage}
+\captionof{figure}{The Domain is divided into two subdomains $\Omega_I$ and $\Omega_{II}$.}
 \end{center}
 
 The Laplacian is discretized using a second order accurate approximation given by 
 \begin{align}
 \Delta_h u_{i,j}^n := \dfrac{1}{h^2}\left( u_{i\pm1,j}^n+u_{i,j\pm1}^n-4u_{i,j}^n\right), \quad \bx_{i,j}\in\Omega_I.
+\label{eq:laplace}
 \end{align}
-A similar formula can be written for the solution on subdomain $\Omega_{II}$. Moreover we need to define a set of ghost points for the interior subdomain $\Omega_{I}$, (see figure \ref{fig_ghost})
+A similar formula can be written for the solution on subdomain $\Omega_{II}$. Moreover we need to define a set of ghost points for the interior subdomain $\Omega_{I}$, (see figure \ref{fig:ghost})
 \begin{align}
 G_I = \lbrace (i,j), \bx_{i,j}\notin \Omega_I, \text{ but at least one of } \bx_{i\pm1,j}\in\Omega_I \text{ or } \bx_{i,j\pm1}\in\Omega_I\rbrace.
 \end{align}
-The corresponding expression can be used for the ghost points in $\Omega_{II}$. 
+The corresponding expression can be used for the ghost points in $\Omega_{II}$. Note that the solution at the ghost points are obtained using the jump conditions \eqref{eq:jump_1} and \eqref{eq:jump_2}. We can derive a second order approximation for the value and the derivative at the interface using four Lagrange interpolations (see figure 1 in \cite{main_paper}).
 
-Note that the solution at the ghost points are obtained using the jump conditions \eqref{eq:jump_1} and \eqref{eq:jump_2}.
+\begin{center}
+\vspace{.5cm}
+\begin{minipage}[c]{0.4\textwidth}
+\begin{tikzpicture}[scale = .8]
+\newcommand{\E}{(-4, -3) rectangle (4,3)}
+\newcommand{\A}{(0,0) circle (1.5)}
+
+\draw[fill=white] \E;
+\draw[fill=white] \A;
+\draw (-4,-3) grid (4,3);
+\draw (-2,0)  node{\LARGE $\bullet$};
+\draw (-2,1)  node{\LARGE $\bullet$};
+\draw (-2,-1)  node{\LARGE $\bullet$};
+\draw (-1,2)  node{\LARGE $\bullet$};
+\draw (-1,-2)  node{\LARGE $\bullet$};
+\draw (0,2)  node{\LARGE $\bullet$};
+\draw (0,-2)  node{\LARGE $\bullet$};
+\draw (1,2)  node{\LARGE $\bullet$};
+\draw (1,-2)  node{\LARGE $\bullet$};
+\draw (2,0)  node{\LARGE $\bullet$};
+\draw (2,1)  node{\LARGE $\bullet$};
+\draw (2,-1)  node{\LARGE $\bullet$};
+
+
+\draw (-3,-2) node[below left] {$\Omega_{II}$};
+\draw (0,-0.5) node[below left] {$\Omega_I$};
+
+\end{tikzpicture}
+\label{fig:ghost}
+\end{minipage}
+\captionof{figure}{The Domain is divided into two subdomains $\Omega_I$ and $\Omega_{II}$.}
+\end{center}
+
+Consider the following one dimensional wave equation with discontinuous wave propagation speed. 
+\begin{center}
+\begin{minipage}[c]{.7\textwidth}
+\begin{align}
+u_{tt} &= u_{xx}, \quad &x_{\min}&\leq x\leq 0, \quad &t\geq0,\\
+w_{tt} &= c^2w_{xx}, \quad &0&\leq x\leq x_{\max}, \quad &t\geq0,\\
+u(x,0) = U_0(x), \quad u_t(x,0) &= U_1(x), \quad &x_{\min}&\leq x\leq 0,\\
+w(x,0) = W_0(x), \quad w_t(x,0) &= W_1(x), \quad &0&\leq x\leq x_{\max}.
+\label{eq:1d_equations}
+\end{align}
+\end{minipage}
+\end{center}
+
+where $x_{\min}<0$ and $x_{\max}>0$, subject to the Dirichlet boundary conditions
+\begin{align}
+u(x_{\min},t) = \sin(\pi t), \quad w(x_{\max},t) = 0, \quad t\geq 0.
+\label{eq:1d_bc_1}
+\end{align}
+We also implemented the method using a Dirichlet boundary condition at $x_{\min}$ and Homogeneous Neumann boundary condition at $x_{\max}$. 
+\begin{align}
+u(x_{\min},t) = \sin(\pi t), \quad w_x(x_{\max},t) = 0, \quad t\geq 0.
+\label{eq:1d_bc_2}
+\end{align}
+The jump conditions at the interface are
+\begin{align}
+u(0,t) &= w(0,t), \nonumber \\
+u_x(0,t) &= c^2w_x(0,t).
+\label{eq:1d_jump}
+\end{align}
+Also we shift the grid to make sure that the discontinuity is not at one of the grid points. As in \eqref{eq:laplace} we discretize the system of equations in \eqref{eq:1d_equations} and the  boundary conditions.
+
+At the interface
 
 
 
@@ -183,6 +249,11 @@ Note that the solution at the ghost points are obtained using the jump condition
 
 
 \begin{thebibliography}{0}
+
+\bibitem{main_paper}
+H-.O., Kreiss, and N.A. Petersson,
+\emph{An embedded boundary method for the wave equation with discontinuous coefficients},
+SIAM J. Sci. Comput., 28 (2006), No. 6, pp. 2054--2074.
 
 \bibitem{berger} 
 M.J., Berger, C. Helzel, R.J., LeVeque,
