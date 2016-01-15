@@ -244,9 +244,27 @@ To solve this second order ODE, we can convert the system into two 1st order set
 % or Implicit Euler to get 
 % Z^(n+1) = inv(I-inv(C_1)*C_2*dt)*Z^n.
 
+\centering
+\begin{minipage}[c]{0.5\textwidth}
+\begin{tikzpicture}[scale = 1]
+\draw [thick, ->] (-5,0) -- (6.6,0);
+\foreach \x  in {-2,...,1}{ 
+   \draw (2*\x cm, 2pt) -- (2*\x cm, -2pt) node[anchor = north, yshift=-3ex] {$u_{\x }$};
+   }
+\foreach \x  in {0,...,3}{ 
+   \draw (2*\x cm, 2pt) -- (2*\x cm, -2pt) node[anchor = south, yshift=+3ex] {$w_{\x }$};   
+   }
+\draw [thick,dashed] (0.8,0.7) -- (0.8,-0.7);
+\draw (0.8,1) node {$x=0$}; 
+\draw (0.4,0.2) node {$\alpha h$}; 
+\draw (1.4,0.2) node {$(1-\alpha) h$}; 
+
+\end{tikzpicture}
+
+\end{minipage}
 
 
-
+\captionof{figure}{The Domain is divided into two subdomains $\Omega_I$ and $\Omega_{II}$.}
 
 
 
