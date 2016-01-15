@@ -168,6 +168,37 @@ G_I = \lbrace (i,j), \bx_{i,j}\notin \Omega_I, \text{ but at least one of } \bx_
 The corresponding expression can be used for the ghost points in $\Omega_{II}$. 
 
 
+\begin{center}
+\begin{minipage}[c]{0.5\textwidth}
+\centering
+\begin{tikzpicture}
+\newcommand{\E}{(-4, -3) rectangle (4,3)}
+\newcommand{\A}{(0,0) circle (1.5)}
+
+\draw[fill=white] \E;
+\draw[fill=white] \A;
+\draw (-4,-3) grid (4,3);
+\draw (-2,0)  node{\LARGE $\bullet$};
+\draw (-2,1)  node{\LARGE $\bullet$};
+\draw (-2,-1)  node{\LARGE $\bullet$};
+\draw (-1,2)  node{\LARGE $\bullet$};
+\draw (-1,-2)  node{\LARGE $\bullet$};
+\draw (0,2)  node{\LARGE $\bullet$};
+\draw (0,-2)  node{\LARGE $\bullet$};
+\draw (1,2)  node{\LARGE $\bullet$};
+\draw (1,-2)  node{\LARGE $\bullet$};
+\draw (2,0)  node{\LARGE $\bullet$};
+\draw (2,1)  node{\LARGE $\bullet$};
+\draw (2,-1)  node{\LARGE $\bullet$};
+
+
+\draw (-3,-2) node[below left] {$\Omega_{II}$};
+\draw (0,-0.5) node[below left] {$\Omega_I$};
+
+\end{tikzpicture}
+\captionof{figure}{The Domain is divided into two subdomains $\Omega_I$ and $\Omega_{II}$.}
+\end{minipage}
+\end{center}
 
 
 
