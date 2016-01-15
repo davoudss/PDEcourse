@@ -17,6 +17,8 @@
 \usepackage{titlesec}  %% modifier les section
 \usepackage{pgfplots} %% provides tools to generate plots and labeled axes easily
 \usepackage{color}
+\usepackage{movie15}
+\usepackage{animate}
 
 \usepackage{tikz}  %%pour les figures
 \usetikzlibrary{shapes,arrows,patterns}
@@ -155,9 +157,9 @@ u &= w, &\bx\in\Gamma, \quad t\geq 0, \label{eq:jump_1} \\
 \draw (0,-0.5) node[below left] {$\Omega_I$};
 
 \end{tikzpicture}
-\label{fig:domain}
 \end{minipage}
 \captionof{figure}{The Domain is divided into two subdomains $\Omega_I$ and $\Omega_{II}$.}
+\label{fig:domain}
 \end{center}
 
 The Laplacian is discretized using a second order accurate approximation given by 
@@ -199,9 +201,9 @@ The corresponding expression can be used for the ghost points in $\Omega_{II}$. 
 \draw (0,-0.5) node[below left] {$\Omega_I$};
 
 \end{tikzpicture}
-\label{fig:ghost}
 \end{minipage}
 \captionof{figure}{The Domain is divided into two subdomains $\Omega_I$ and $\Omega_{II}$.}
+\label{fig:ghost}
 \end{center}
 
 Consider the following one dimensional wave equation with discontinuous wave propagation speed. 
@@ -235,17 +237,22 @@ u_x(0,t) &= c^2w_x(0,t).
 \end{align}
 Also we shift the grid to make sure that the discontinuity is not at one of the grid points. As in \eqref{eq:laplace} we discretize the system of equations in \eqref{eq:1d_equations} and the  boundary conditions.
 
-At the interface we compute the value and the derivative using Lagrange interpolations (see figure \ref{fig:1d_interp}). Next we discretize the jump condition and using the discretized system of equations and simplifications, the semi- discrete problem can be written in a matrix form as $Bw_{tt}=\frac{1}{h^2}Aw$ where $A$ and $B$ are tridiagonal matrices.
+At the interface we compute the value and the derivative using Lagrange interpolations (see figure \ref{fig:1d_interp}). Next, we discretize the jump condition and using the discretized system of equations and simplifications, the semi- discrete problem can be written in a matrix form as 
+$$Bw_{tt}=\frac{1}{h^2}Aw,$$
+where $A$ and $B$ are tridiagonal matrices. To solve this second order ODE, we can convert the system into two 1st order ODEs 
+\begin{align}
+C_1 Z_t = C_2 Z, \quad Z = [v, v_t]^T,
+\end{align}
+and use implicit Euler method to iterate in time
+\begin{align}
+Z^{n+1} = (I-C_1^{-1}C_2dt)^{-1}Z^n.
+\end{align} 
 
-To solve this second order ODE, we can convert the system into two 1st order set of ODEs
-% as C_1 Z_t = C_2 Z, where Z = [v v_t]'.
-% Discretize this by Explicit Euler to get 
-% Z^(n+1) = (I+inv(C_1)*C_2*dt*Z^n.
-% or Implicit Euler to get 
-% Z^(n+1) = inv(I-inv(C_1)*C_2*dt)*Z^n.
 
+{
 \centering
-\begin{minipage}[c]{0.5\textwidth}
+\vspace{.5cm}
+\begin{minipage}[c]{0.7\textwidth}
 \begin{tikzpicture}[scale = 1]
 \draw [thick, ->] (-5,0) -- (6.6,0);
 \foreach \x  in {-2,...,1}{ 
@@ -260,18 +267,30 @@ To solve this second order ODE, we can convert the system into two 1st order set
 \draw (1.4,0.2) node {$(1-\alpha) h$}; 
 
 \end{tikzpicture}
-
 \end{minipage}
+\captionof{figure}{The interpolation procedure at the interface.}
+\label{fig:1d_interp}
+}
 
+\newpage
+\section{Results}
+Here we provide the solution of the system in \eqref{eq:1d_equations} with boundary conditions \eqref{eq:1d_bc_1} and \eqref{eq:1d_bc_2} and different wave speeds $c=0.5,1,2$. 
 
-\captionof{figure}{The Domain is divided into two subdomains $\Omega_I$ and $\Omega_{II}$.}
+\begin{figure}[ht!]
+\centering
+\includemovie{3cm}{3cm}{fig/final_wave1d_dirichlet_c5.gif}
+\includemovie{3cm}{3cm}{fig/final_wave1d_dirichlet_c10.gif}
+\includemovie{3cm}{3cm}{fig/final_wave1d_dirichlet_c20.gif}
+\caption{The solution of the 1d wave equation with discontinuity and Dirichlet boundary condition at both ends \eqref{eq:1d_bc_1}. (left) $c=0.5$, (middle) $c=1$, (right) $c=2$.}
+\end{figure}
 
-
-
-
-
-
-
+\begin{figure}[ht!]
+\centering
+\includemovie{3cm}{3cm}{fig/final_wave1d_neumann_c5.gif}
+\includemovie{3cm}{3cm}{fig/final_wave1d_neumann_c10.gif}
+\includemovie{3cm}{3cm}{fig/final_wave1d_neumann_c20.gif}
+\caption{The solution of the 1d wave equation with discontinuity and Dirichlet boundary condition at $x_{\min}$ and Neumann boundary condition at $x_{\max}$ \eqref{eq:1d_bc_2}. (left) $c=0.5$, (middle) $c=1$, (right) $c=2$.}
+\end{figure}
 
 \begin{thebibliography}{0}
 

@@ -17,7 +17,7 @@ function wave1d_embed
 clf;
 
 %% set the parameters
-c    = .5;                 % second wave speed other than zero.
+c    = 2;                 % second wave speed other than zero.
 xmin = -1;                % boundary limit
 xmax = 1;                 % boundary limit
 N    = 56;                % grid points
@@ -25,7 +25,7 @@ h    = (xmax-xmin)/(N-1); % space step
 dt   = .01;
 assert(c^2*dt^2/h^2<1)
 Tend =  10;                % final time
-filename = sprintf('wave1d_c%d.gif',c*10);
+filename = sprintf('wave1d_dirichlet_c%d.gif',c*10);
 
 x = linspace(xmin,xmax,N);
 % grid points for u and w
